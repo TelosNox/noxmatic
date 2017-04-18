@@ -1,0 +1,366 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:nodemcu
+LIBS:DS18B20
+LIBS:Noxmatic-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L NodeMCU_Amica_R2 U1
+U 1 1 58F51508
+P 3900 3700
+F 0 "U1" H 3900 4500 50  0000 C CNN
+F 1 "NodeMCU_Amica_R2" H 3900 2850 50  0000 C CNN
+F 2 "" H 4150 3700 50  0000 C CNN
+F 3 "" H 4150 3700 50  0000 C CNN
+	1    3900 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L D_Schottky D2
+U 1 1 58F51670
+P 5950 4650
+F 0 "D2" H 5950 4750 50  0000 C CNN
+F 1 "BAT42" H 5950 4550 50  0000 C CNN
+F 2 "" H 5950 4650 50  0000 C CNN
+F 3 "" H 5950 4650 50  0000 C CNN
+	1    5950 4650
+	-1   0    0    1   
+$EndComp
+$Comp
+L CP C1
+U 1 1 58F5172D
+P 5500 4800
+F 0 "C1" H 5525 4900 50  0000 L CNN
+F 1 "1n" H 5525 4700 50  0000 L CNN
+F 2 "" H 5538 4650 50  0000 C CNN
+F 3 "" H 5500 4800 50  0000 C CNN
+	1    5500 4800
+	1    0    0    -1  
+$EndComp
+$Comp
+L IRLB8721PBF Q1
+U 1 1 58F519DA
+P 6700 3650
+F 0 "Q1" H 6950 3725 50  0000 L CNN
+F 1 "IRF3708" H 6950 3650 50  0000 L CNN
+F 2 "TO_SOT_Packages_THT:TO-220_Neutral123_Vertical" H 6950 3575 50  0001 L CIN
+F 3 "" H 6700 3650 50  0000 L CNN
+	1    6700 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L IRLB8721PBF Q2
+U 1 1 58F51ACB
+P 6700 4300
+F 0 "Q2" H 6950 4375 50  0000 L CNN
+F 1 "IRF3708" H 6950 4300 50  0000 L CNN
+F 2 "TO_SOT_Packages_THT:TO-220_Neutral123_Vertical" H 6950 4225 50  0001 L CIN
+F 3 "" H 6700 4300 50  0000 L CNN
+	1    6700 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R4
+U 1 1 58F51B3E
+P 6650 3850
+F 0 "R4" V 6730 3850 50  0000 C CNN
+F 1 "10k" V 6650 3850 50  0000 C CNN
+F 2 "" V 6580 3850 50  0000 C CNN
+F 3 "" H 6650 3850 50  0000 C CNN
+	1    6650 3850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R R2
+U 1 1 58F51C3A
+P 6350 3700
+F 0 "R2" V 6430 3700 50  0000 C CNN
+F 1 "100" V 6350 3700 50  0000 C CNN
+F 2 "" V 6280 3700 50  0000 C CNN
+F 3 "" H 6350 3700 50  0000 C CNN
+	1    6350 3700
+	0    1    1    0   
+$EndComp
+$Comp
+L R R3
+U 1 1 58F51C7F
+P 6350 4350
+F 0 "R3" V 6430 4350 50  0000 C CNN
+F 1 "100" V 6350 4350 50  0000 C CNN
+F 2 "" V 6280 4350 50  0000 C CNN
+F 3 "" H 6350 4350 50  0000 C CNN
+	1    6350 4350
+	0    1    1    0   
+$EndComp
+$Comp
+L R R5
+U 1 1 58F51CC1
+P 6650 4500
+F 0 "R5" V 6730 4500 50  0000 C CNN
+F 1 "10k" V 6650 4500 50  0000 C CNN
+F 2 "" V 6580 4500 50  0000 C CNN
+F 3 "" H 6650 4500 50  0000 C CNN
+	1    6650 4500
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6500 3850 6500 3700
+Wire Wire Line
+	6500 4500 6500 4350
+Wire Wire Line
+	6200 3700 4350 3700
+Wire Wire Line
+	4350 3800 6200 3800
+Wire Wire Line
+	6200 3800 6200 4350
+Wire Wire Line
+	6900 3850 6800 3850
+Wire Wire Line
+	6900 4950 6900 4500
+Wire Wire Line
+	6900 4500 6900 3850
+$Comp
+L DS18B20 U2
+U 1 1 58F5289F
+P 9100 3300
+F 0 "U2" H 9100 3200 50  0000 C CNN
+F 1 "DS18B20" H 9500 3400 50  0000 C CNN
+F 2 "MODULE" H 9100 3300 50  0001 C CNN
+F 3 "DOCUMENTATION" H 9100 3300 50  0001 C CNN
+	1    9100 3300
+	1    0    0    -1  
+$EndComp
+Connection ~ 6900 3850
+$Comp
+L R R1
+U 1 1 58F5563D
+P 4500 3500
+F 0 "R1" V 4580 3500 50  0000 C CNN
+F 1 "4,7k" V 4500 3500 50  0000 C CNN
+F 2 "" V 4430 3500 50  0000 C CNN
+F 3 "" H 4500 3500 50  0000 C CNN
+	1    4500 3500
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4650 3500 4650 3400
+Connection ~ 4650 3400
+$Comp
+L L_Core_Ferrite L1
+U 1 1 58F56D45
+P 3150 4250
+F 0 "L1" V 3100 4250 50  0000 C CNN
+F 1 "Drossel 15mH" V 3200 4650 50  0000 C CNN
+F 2 "" H 3150 4250 50  0000 C CNN
+F 3 "" H 3150 4250 50  0000 C CNN
+	1    3150 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L +12V #PWR2
+U 1 1 58F575B2
+P 8550 4400
+F 0 "#PWR2" H 8550 4250 50  0001 C CNN
+F 1 "+12V" H 8550 4540 50  0000 C CNN
+F 2 "" H 8550 4400 50  0000 C CNN
+F 3 "" H 8550 4400 50  0000 C CNN
+	1    8550 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L D_Zener D1
+U 1 1 58F575DE
+P 3000 4400
+F 0 "D1" H 3050 4300 50  0000 C CNN
+F 1 "Zener 15V 5W" H 2850 4500 50  0000 C CNN
+F 2 "" H 3000 4400 50  0000 C CNN
+F 3 "" H 3000 4400 50  0000 C CNN
+	1    3000 4400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3150 4400 3450 4400
+$Comp
+L GND #PWR1
+U 1 1 58F58D97
+P 8350 4200
+F 0 "#PWR1" H 8350 3950 50  0001 C CNN
+F 1 "GND" H 8350 4050 50  0000 C CNN
+F 2 "" H 8350 4200 50  0000 C CNN
+F 3 "" H 8350 4200 50  0000 C CNN
+	1    8350 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 4400 2850 4950
+Wire Wire Line
+	2850 4950 5800 4950
+Wire Wire Line
+	5800 4950 6900 4950
+Connection ~ 6900 4500
+$Comp
+L Screw_Terminal_1x06 J?
+U 1 1 58F5B375
+P 7850 3900
+F 0 "J?" H 7850 4550 50  0000 C TNN
+F 1 "Screw_Terminal_1x06" V 7700 3900 50  0000 C TNN
+F 2 "" H 7850 3275 50  0001 C CNN
+F 3 "" H 7825 4300 50  0001 C CNN
+	1    7850 3900
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5800 4650 4900 4650
+Wire Wire Line
+	4900 4650 4900 3900
+Wire Wire Line
+	4900 3900 4350 3900
+Wire Wire Line
+	5800 4950 5800 4950
+Wire Wire Line
+	7650 4400 7650 5050
+Wire Wire Line
+	3150 4100 2800 4100
+Wire Wire Line
+	2800 4100 2800 5050
+Wire Wire Line
+	2800 5050 7650 5050
+Wire Wire Line
+	6800 4500 6900 4500
+Wire Wire Line
+	6900 4500 7550 4500
+Wire Wire Line
+	8950 4200 8350 4200
+Wire Wire Line
+	8350 4200 7650 4200
+Wire Wire Line
+	7650 4200 7550 4200
+Wire Wire Line
+	4350 3400 4650 3400
+Wire Wire Line
+	4650 3400 8600 3400
+Wire Wire Line
+	8950 3300 8600 3300
+Wire Wire Line
+	8600 3300 8600 3400
+Wire Wire Line
+	8950 3400 8950 3500
+Wire Wire Line
+	8950 3500 8950 4200
+Wire Wire Line
+	8950 3500 9250 3500
+Wire Wire Line
+	9250 3500 9250 3100
+Wire Wire Line
+	9250 3100 8950 3100
+Wire Wire Line
+	8950 3100 8950 3200
+Connection ~ 8350 4200
+Connection ~ 8950 3500
+Text Notes 8000 3400 0    60   ~ 0
+Temperature
+Text Notes 8000 4050 0    60   ~ 0
+Speed
+Text Notes 8000 3850 0    60   ~ 0
+Pump
+Text Notes 8000 3650 0    60   ~ 0
+Heatgrip
+Text Notes 8000 4450 0    60   ~ 0
+VCC
+Text Notes 8000 4250 0    60   ~ 0
+GND
+Wire Wire Line
+	8550 4400 7650 4400
+Wire Wire Line
+	7550 4500 7550 4200
+Connection ~ 7650 4200
+Connection ~ 7650 4400
+Wire Wire Line
+	6100 4650 7450 4650
+Wire Wire Line
+	7450 4650 7450 4000
+Wire Wire Line
+	7450 4000 7650 4000
+Wire Wire Line
+	6800 4100 7350 4100
+Wire Wire Line
+	7350 4100 7350 3800
+Wire Wire Line
+	7350 3800 7650 3800
+Wire Wire Line
+	6800 3450 7350 3450
+Wire Wire Line
+	7350 3450 7350 3600
+Wire Wire Line
+	7350 3600 7650 3600
+Wire Notes Line
+	6250 4000 7300 4000
+Wire Notes Line
+	7300 3650 7300 5000
+Wire Notes Line
+	7300 3650 9650 3650
+Wire Notes Line
+	4350 3050 4350 5000
+Wire Notes Line
+	4350 3050 9650 3050
+Wire Notes Line
+	9650 3050 9650 3650
+Wire Notes Line
+	4350 3750 6250 3750
+Text Notes 4450 3200 0    60   Italic 12
+Heatgrip Module
+Wire Notes Line
+	4350 5000 7300 5000
+Text Notes 4400 4800 0    60   Italic 12
+Oiler Module
+Wire Notes Line
+	6250 3750 6250 4000
+Connection ~ 5800 4650
+Connection ~ 5500 4650
+Connection ~ 5500 4950
+Connection ~ 7650 3400
+Connection ~ 7650 3600
+Connection ~ 7650 3800
+Connection ~ 7650 4000
+$EndSCHEMATC
