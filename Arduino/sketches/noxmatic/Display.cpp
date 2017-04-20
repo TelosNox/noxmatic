@@ -7,14 +7,10 @@
 const int DISPLAY_WIDTH = 102;
 
 Display::Display(Heater *heater, ChainOiler *chainOiler, Settings *settings) {
-//	_u8g = new U8GLIB_SSD1306_128X64(U8G_I2C_OPT_NONE);
   _u8g = new U8G2_UC1701_EA_DOGS102_F_4W_SW_SPI(0, 9, 8, 12, 10 , 11);
-	//_u8g = new U8G2_DOGS102(9, 8, 12, 10, 11);
-//	_u8g = new U8GLIB_SH1106_128X64(U8G_I2C_OPT_NONE);
 	_u8g->setColorIndex(1);
 	_heater = heater;
 	_chainOiler = chainOiler;
-	_setupMode = false;
 	_settings = settings;
 	_pumpRunning = false;
 	_u8g->setContrast(45);
@@ -32,19 +28,13 @@ void Display::processRefresh() {
 
 	unsigned long currentMillis = millis();
 	if (currentMillis > nextRefreshMillis) {
-		nextRefreshMillis = currentMillis + REFRESH_INTERVAL_MILLIS
-		;
-		if (_setupMode) {
-			drawSetup();
-		} else {
-			drawNormal();
-		}
+		nextRefreshMillis = currentMillis + REFRESH_INTERVAL_MILLIS;
+    drawNormal();
 	}
 }
 
 void Display::drawNormal() {
 	static bool distanceVisible = true;
-//	static bool blink = true;
 
 	int temperature = _heater->getActualTemperature();
 	int heaterPower = _heater->getHeaterPower();
@@ -57,14 +47,8 @@ void Display::drawNormal() {
 		distanceVisible = !distanceVisible;
 	}
 
-//	blink = !blink;
-
 	_u8g->firstPage();
 	do {
-//		if (blink) {
-//			_u8g->drawBox(0,0,5,5);
-//		}
-
 		printTemperature(temperature);
 		drawHeatpower(heaterPower);
 
@@ -182,72 +166,4 @@ void Display::drawSpeed(int speed) {
 	_u8g->setCursor(35, 57);
 	_u8g->print("h");
 	_u8g->drawHLine(33, 51, 7);
-}
-
-void Display::drawSetup() {
-	static unsigned long nextSwitchMillis = 0;
-	static bool heater = true;
-
-	unsigned long currentMillis = millis();
-	if (currentMillis > nextSwitchMillis) {
-		nextSwitchMillis = currentMillis + SETUP_SWITCH_INTERVAL_MILLIS
-		;
-		heater = !heater;
-	}
-
-	_u8g->firstPage();
-	do {
-		_u8g->setFont(u8g_font_6x13);
-		_u8g->setCursor(0, 10);
-		if (_pumpRunning) {
-			_u8g->print("Pumpe l�uft");
-		} else {
-			if (heater) {
-				_u8g->print("Werte Heizung");
-
-				_u8g->setCursor(0, 30);
-				_u8g->print("Starttemp = ");
-				_u8g->print(_settings->getHeaterStartTemp() / 10);
-				_u8g->print(",");
-				_u8g->print(_settings->getHeaterStartTemp() % 10);
-				_u8g->print("�");
-				_u8g->setCursor(0, 40);
-				_u8g->print("Startpower = ");
-				_u8g->print(_settings->getHeaterStartPower());
-				_u8g->print("%");
-				_u8g->setCursor(0, 50);
-				_u8g->print("Maxtemp = ");
-				_u8g->print(_settings->getHeaterMaxTemp() / 10);
-				_u8g->print(",");
-				_u8g->print(_settings->getHeaterMaxTemp() % 10);
-				_u8g->print("�");
-				_u8g->setCursor(0, 60);
-				_u8g->print("Maxpower = ");
-				_u8g->print(_settings->getHeaterMaxPower());
-				_u8g->print("%");
-			} else {
-				_u8g->print("Werte �ler");
-
-				_u8g->setCursor(0, 30);
-				_u8g->print("Umfang = ");
-				_u8g->print(_settings->getOilerRotationLength());
-				_u8g->print("mm");
-				_u8g->setCursor(0, 40);
-				_u8g->print("Radticks = ");
-				_u8g->print(_settings->getOilerTickPerRotation());
-				_u8g->setCursor(0, 50);
-				_u8g->print("Distanz = ");
-				_u8g->print(_settings->getOilerDistance());
-				_u8g->print("m");
-				_u8g->setCursor(0, 60);
-				_u8g->print("Intervall = ");
-				_u8g->print(_settings->getOilerEmergencyInterval());
-				_u8g->print("s");
-			}
-		}
-	} while (_u8g->nextPage());
-}
-
-void Display::setSetupMode(bool mode) {
-	_setupMode = mode;
 }

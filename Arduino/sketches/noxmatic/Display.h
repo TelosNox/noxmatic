@@ -10,8 +10,7 @@ public:
 	Display(Heater *heater, ChainOiler *chainOiler, Settings *settings);
 	virtual ~Display();
 	void process();
-	void setSetupMode(bool mode);
-
+ 
 	void setPumpRunning(bool pumpRunning) {
 		_pumpRunning = pumpRunning;
 	}
@@ -19,12 +18,10 @@ public:
 private:
 	void processRefresh();
 	void drawNormal();
-	void drawSetup();
 	U8G2 *_u8g;
 	Heater *_heater;
 	ChainOiler *_chainOiler;
 	Settings *_settings;
-	bool _setupMode;
 	bool _pumpRunning;
 	void printTemperature(int temperature);
 	void drawHeatpower(int heaterPower);

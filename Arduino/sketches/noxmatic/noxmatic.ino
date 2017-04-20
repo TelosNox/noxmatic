@@ -14,11 +14,6 @@
 #define PIN_DISPLAY_RS 8
 #define PIN_DISPLAY_CSB 9
 
-const unsigned long startUpTime = 10000;
-
-bool setupMode = false;
-bool startUp = true;
-
 ChainOiler chainOiler(PIN_PUMP);
 Heater heater(PIN_HEATER, PIN_TEMPERATURE_DATA);
 Settings settings;
@@ -29,7 +24,6 @@ void setup() {
   digitalWrite(PIN_SPEED_SIGNAL, HIGH);
   attachInterrupt(0, speedSignalTrigger, FALLING);
   initSettings();
-  display.setSetupMode(true);
 }
 
 void initSettings() {
@@ -41,12 +35,6 @@ void loop() {
   chainOiler.process();
   heater.process();
   display.process();
-  if (startUp) {
-    if (millis() > startUpTime) {
-      startUp = false;
-      display.setSetupMode(false);
-    }
-  }
 }
 
 void speedSignalTrigger() {
