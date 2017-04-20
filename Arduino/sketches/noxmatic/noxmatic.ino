@@ -2,6 +2,7 @@
 #include "Settings.h"
 #include "Heater.h"
 #include "Display.h"
+#include "CommunicationESP.h"
 
 #define PIN_SPEED_SIGNAL 2
 #define PIN_PUMP 6
@@ -18,6 +19,7 @@ ChainOiler chainOiler(PIN_PUMP);
 Heater heater(PIN_HEATER, PIN_TEMPERATURE_DATA);
 Settings settings;
 Display display(&heater, &chainOiler, &settings);
+CommunicationESP communication(&settings);
 
 void setup() {
   pinMode(PIN_SPEED_SIGNAL, INPUT);
