@@ -10,54 +10,80 @@ public:
 	virtual ~Settings();
 
 	int getHeaterMaxPower() const {
-		return _heaterMaxPower;
+		return heaterMaxPower;
 	}
 
+  void setHeaterMaxPower(int heaterMaxPower) {
+    this->heaterMaxPower = heaterMaxPower;
+  }
+  
 	int getHeaterMaxTemp() const {
-		return _heaterMaxTemp;
+		return heaterMaxTemp;
 	}
+
+  void setHeaterMaxTemp(int heaterMaxTemp) {
+    this->heaterMaxTemp = heaterMaxTemp;
+  }
 
 	int getHeaterStartPower() const {
-		return _heaterStartPower;
+		return heaterStartPower;
 	}
+
+  void setHeaterStartPower(int heaterStartPower) {
+    this->heaterStartPower = heaterStartPower;
+  }
 
 	int getHeaterStartTemp() const {
-		return _heaterStartTemp;
+		return heaterStartTemp;
 	}
+
+  void setHeaterStartTemp(int heaterStartTemp) {
+    this->heaterStartTemp = heaterStartTemp;
+  }
 
 	int getOilerDistance() const {
-		return _oilerDistance;
+		return oilerDistance;
 	}
+
+  void setOilerDistance(int oilerDistance) {
+    this->oilerDistance = oilerDistance;
+  }
 
 	int getOilerRotationLength() const {
-		return _oilerRotationLength;
+		return oilerRotationLength;
 	}
+
+  void setOilerRotationLenght(int oilerRotationLength) {
+    this->oilerRotationLength = oilerRotationLength;
+  }
 
 	int getOilerTickPerRotation() const {
-		return _oilerTickPerRotation;
+		return oilerTickPerRotation;
 	}
+
+  void setOilerTickPerRoatation(int oilerTickPerRotation) {
+    this->oilerTickPerRotation = oilerTickPerRotation;
+  }
 
 	int getOilerEmergencyInterval() const {
-		return _oilerEmergencyInterval;
+		return oilerEmergencyInterval;
 	}
 
-	String toString();
-
-	void setValue(int address, int value);
+  void setOilerEmergencyInterval(int oilerEmergencyInterval) {
+    this->oilerEmergencyInterval = oilerEmergencyInterval;
+  }
 
 	void persist();
 
 private:
-	int _oilerRotationLength;
-	int _oilerTickPerRotation;
-	int _oilerDistance;
-	int _oilerEmergencyInterval;
-	int _heaterStartTemp;
-	int _heaterStartPower;
-	int _heaterMaxTemp;
-	int _heaterMaxPower;
-
-	String keyValue(int key, int value);
+	int oilerRotationLength;
+	int oilerTickPerRotation;
+	int oilerDistance;
+	int oilerEmergencyInterval;
+	int heaterStartTemp;
+	int heaterStartPower;
+	int heaterMaxTemp;
+	int heaterMaxPower;
 };
 
 #endif /* SETTINGS_H_ */

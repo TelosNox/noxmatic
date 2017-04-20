@@ -1,4 +1,3 @@
-// Do not remove the include below
 #include "ChainOiler.h"
 #include "Settings.h"
 #include "Heater.h"
@@ -26,7 +25,6 @@ Settings settings;
 Display display(&heater, &chainOiler, &settings);
 
 void setup() {
-  Serial.begin(9600);
   pinMode(PIN_SPEED_SIGNAL, INPUT);
   digitalWrite(PIN_SPEED_SIGNAL, HIGH);
   attachInterrupt(0, speedSignalTrigger, FALLING);
