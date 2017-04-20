@@ -12,23 +12,23 @@ public:
 	void process();
 
 	int getActualTemperature() const {
-		return _actualTemperature;
+		return actualTemperature;
 	}
 
 	int getHeaterPower() const {
-		return _heaterPower;
+		return heaterPower;
 	}
 
 private:
-	int _pinHeater;
-	int _actualTemperature;
-	int _heaterPower;
-	bool _heatActive;
+	int pinHeater;
+	int actualTemperature;
+	int heaterPower;
+	bool heatActive;
 
-	int _startTemp;
-	int _startHeat;
-	int _maxTemp;
-	int _maxHeat;
+	int startTemp;
+	int startHeat;
+	int maxTemp;
+	int maxHeat;
 
 	void calculateTemperatureAndHeat();
 	void calculateHeat();
@@ -37,8 +37,8 @@ private:
 	void deactivateHeaterPin();
 	long calculateOffMillis();
 	long calculateOnMillis();
-	DallasTemperature* _temperatureSensor;
-	OneWire* _oneWire;
+	DallasTemperature* temperatureSensor;
+	OneWire* oneWire;
 };
 
 #endif /* HEATER_H_ */

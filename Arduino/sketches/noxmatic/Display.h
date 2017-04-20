@@ -12,17 +12,17 @@ public:
 	void process();
  
 	void setPumpRunning(bool pumpRunning) {
-		_pumpRunning = pumpRunning;
+		this->pumpRunning = pumpRunning;
 	}
 
 private:
 	void processRefresh();
 	void drawNormal();
-	U8G2 *_u8g;
-	Heater *_heater;
-	ChainOiler *_chainOiler;
-	Settings *_settings;
-	bool _pumpRunning;
+	U8G2 *u8g;
+	Heater *heater;
+	ChainOiler *chainOiler;
+	Settings *settings;
+	bool pumpRunning;
 	void printTemperature(int temperature);
 	void drawHeatpower(int heaterPower);
 	void drawDistance(int distancePercent, bool blink);

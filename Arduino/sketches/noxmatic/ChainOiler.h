@@ -14,35 +14,35 @@ class ChainOiler {
 	int getDistancePercent();
 
 	int getSpeed() const {
-		return _speed;
+		return currentSpeed;
 	}
 
 	bool isSpeedPump() const {
-		return _speedPump;
+		return speedPump;
 	}
 
 	bool isSignalLost() const {
-		return _signalLost;
+		return signalLost;
 	}
 
 	void pumpOn();
 	void pumpOff();
 
 private:
-	long _requiredOilTicks;
-	long _remainingOilTicks;
-	int _pinPump;
-	bool _pumpActive;
-	bool _startPump;
-	bool _stopPump;
-	bool _signalLost;
-	unsigned long _lastTickMillis;
-	int _speed;
-	long _speedTickFactor;
-	int _speedTicks;
-	bool _speedPump;
-	long _emergencyPumpInterval;
-	int _speedIntervall;
+	long requiredOilTicks;
+	long remainingOilTicks;
+	int pinPump;
+	bool pumpActive;
+	bool startPump;
+	bool stopPump;
+	bool signalLost;
+	unsigned long lastTickMillis;
+	int currentSpeed;
+	long speedTickFactor;
+	int speedTicks;
+	bool speedPump;
+	long emergencyPumpInterval;
+	int speedIntervall;
 
 	long calculateOilTicks(long tickPerRotation, long oilDistance, long rotationLength);
 	void pumpOnce();
