@@ -325,10 +325,6 @@ $EndComp
 Text Notes 5950 4400 0    60   ~ 0
 Heatgrip (L)
 Wire Wire Line
-	4450 4800 4450 4650
-Wire Wire Line
-	4450 5450 4450 5300
-Wire Wire Line
 	4850 4800 4750 4800
 Wire Wire Line
 	4850 5900 4850 4800
@@ -412,7 +408,7 @@ Wire Wire Line
 Wire Wire Line
 	2300 4550 4150 4550
 Wire Wire Line
-	4150 4550 4150 4650
+	4150 4550 4150 4800
 Wire Wire Line
 	2300 4850 3400 4850
 Wire Wire Line
@@ -495,7 +491,7 @@ Wire Wire Line
 Wire Wire Line
 	6550 4150 5600 4150
 Wire Wire Line
-	4150 5300 4150 4950
+	4150 4950 4150 5450
 Wire Wire Line
 	4150 4950 2300 4950
 Wire Wire Line
@@ -539,4 +535,13 @@ Wire Wire Line
 	2300 5450 2850 5450
 Wire Wire Line
 	2850 5450 2850 2400
+Wire Wire Line
+	4150 5450 4450 5450
+Connection ~ 4150 5300
+Wire Wire Line
+	4150 4800 4450 4800
+Connection ~ 4150 4650
+Wire Wire Line
+	4450 4150 4150 4150
+Connection ~ 4150 4150
 $EndSCHEMATC
