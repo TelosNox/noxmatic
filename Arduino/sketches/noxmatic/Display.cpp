@@ -1,19 +1,27 @@
 #include "Display.h"
 #include "Arduino.h"
 
+#ifdef U8X8_HAVE_HW_SPI
+#include <SPI.h>
+#endif
+#ifdef U8X8_HAVE_HW_I2C
+#include <Wire.h>
+#endif
+
 #define REFRESH_INTERVAL_MILLIS 500;
 #define SETUP_SWITCH_INTERVAL_MILLIS 5000;
 
 const int DISPLAY_WIDTH = 102;
 
 Display::Display(Heater *heater, ChainOiler *chainOiler, Settings *settings) {
-  u8g = new U8G2_UC1701_EA_DOGS102_F_4W_SW_SPI(0, 9, 8, 12, 10 , 11);
+  u8g = new U8G2_UC1701_EA_DOGS102_F_4W_HW_SPI(U8G2_R0, D1, D0, D3);
 	u8g->setColorIndex(1);
 	this->heater = heater;
 	this->chainOiler = chainOiler;
 	this->settings = settings;
 	pumpRunning = false;
 	u8g->setContrast(45);
+  u8g->begin();
 }
 
 Display::~Display() {
@@ -36,7 +44,8 @@ void Display::processRefresh() {
 void Display::drawNormal() {
 	static bool distanceVisible = true;
 
-	int temperature = heater->getActualTemperature();
+  int temperature = heater->getActualTemperature();
+  
 	int heaterPower = heater->getHeaterPower();
 	int distancePercent = chainOiler->getDistancePercent();
 	bool signalLost = chainOiler->isSignalLost();
@@ -47,22 +56,22 @@ void Display::drawNormal() {
 		distanceVisible = !distanceVisible;
 	}
 
-	u8g->firstPage();
-	do {
-		printTemperature(temperature);
-		drawHeatpower(heaterPower);
+  u8g->clearBuffer();
 
-		if (signalLost) {
-			u8g->setFont(u8g_font_6x13);
-			u8g->setCursor(0, 63);
-			u8g->print("-Notlauf!-");
-		} else {
-			drawSpeed(speed);
-			if (!speedPump || distanceVisible) {
-				drawDistance(distancePercent, true);
-			}
+	printTemperature(temperature);
+	drawHeatpower(heaterPower);
+
+	if (signalLost) {
+		u8g->setFont(u8g_font_6x13);
+		u8g->setCursor(0, 63);
+		u8g->print("-Notlauf!-");
+	} else {
+		drawSpeed(speed);
+		if (!speedPump || distanceVisible) {
+			drawDistance(distancePercent, true);
 		}
-	} while (u8g->nextPage());
+	}
+  u8g->sendBuffer();
 }
 
 void Display::printTemperature(int temperature) {

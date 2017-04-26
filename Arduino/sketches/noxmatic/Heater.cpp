@@ -1,7 +1,7 @@
 #include "Heater.h"
 #include <Arduino.h>
 
-#define TEMPERATURE_INTERVAL 5000;
+#define TEMPERATURE_INTERVAL 10000;
 #define PWM_INTERVAL 1000;
 
 Heater::Heater(int pinHeater, int pinTemperatureData) {
@@ -46,6 +46,7 @@ void Heater::calculateTemperatureAndHeat() {
 		temperatureSensor->requestTemperatures();
 		float temp = temperatureSensor->getTempCByIndex(0);
 		actualTemperature = temp * 10;
+    Serial.println(actualTemperature);
 		calculateHeat();
 	}
 }

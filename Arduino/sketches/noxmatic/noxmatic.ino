@@ -4,16 +4,11 @@
 #include "Display.h"
 #include "CommunicationESP.h"
 
-#define PIN_SPEED_SIGNAL 2
-#define PIN_PUMP 6
+#define PIN_SPEED_SIGNAL D8
+#define PIN_PUMP D6
 
-#define PIN_TEMPERATURE_DATA 4
-#define PIN_HEATER 5
-
-#define PIN_DISPLAY_SI 11
-#define PIN_DISPLAY_CLK 13
-#define PIN_DISPLAY_RS 8
-#define PIN_DISPLAY_CSB 9
+#define PIN_TEMPERATURE_DATA D2
+#define PIN_HEATER D3
 
 ChainOiler chainOiler(PIN_PUMP);
 Heater heater(PIN_HEATER, PIN_TEMPERATURE_DATA);
@@ -22,9 +17,10 @@ Display display(&heater, &chainOiler, &settings);
 CommunicationESP communication(&settings);
 
 void setup() {
+  Serial.begin(115200);
   pinMode(PIN_SPEED_SIGNAL, INPUT);
   digitalWrite(PIN_SPEED_SIGNAL, HIGH);
-  attachInterrupt(0, speedSignalTrigger, FALLING);
+  attachInterrupt(PIN_SPEED_SIGNAL, speedSignalTrigger, FALLING);
   initSettings();
 }
 

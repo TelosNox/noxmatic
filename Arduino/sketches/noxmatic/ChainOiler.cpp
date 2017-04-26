@@ -32,16 +32,20 @@ void ChainOiler::init(Settings *settings) {
 	long tickPerRotation = settings->getOilerTickPerRotation();
 	long oilDistance = settings->getOilerDistance();
 	emergencyPumpInterval = (long)settings->getOilerEmergencyInterval() * 1000;
-
 	requiredOilTicks = calculateOilTicks(tickPerRotation, oilDistance, rotationLength);
 	remainingOilTicks = requiredOilTicks / 2;
-	speedTickFactor = rotationLength * 3600 / tickPerRotation;
+  if (tickPerRotation != 0) {
+    speedTickFactor = rotationLength * 3600 / tickPerRotation;
+  }
 	if (tickPerRotation > 1) {
 		speedIntervall /= 2;
 	}
 }
 
 long ChainOiler::calculateOilTicks(long tickPerRotation, long oilDistance, long rotationLength) {
+  if (rotationLength == 0) {
+    return 0;
+  }
 	return tickPerRotation * oilDistance * 1000 / rotationLength;
 }
 
@@ -78,6 +82,9 @@ void ChainOiler::process() {
 }
 
 int ChainOiler::getDistancePercent() {
+  if(requiredOilTicks == 0) {
+    return 0;
+  }
 	unsigned long tmp = (requiredOilTicks - remainingOilTicks)* 100;
 	return tmp / requiredOilTicks;
 }
@@ -139,6 +146,9 @@ void ChainOiler::calculateSpeed() {
 		long relevantMillis = lastTick - lastCalcMillis;
 		lastCalcMillis = lastTick;
 
+    if (relevantMillis == 0) {
+      return;
+    }
 		long calcSpeed = ((long)currentTicks * speedTickFactor) / relevantMillis;
 		calcSpeed /= 1000;
 		currentSpeed = (calcSpeed + lastSpeed) / 2;
