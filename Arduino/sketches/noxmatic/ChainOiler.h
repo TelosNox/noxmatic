@@ -13,15 +13,15 @@ class ChainOiler {
 	void process();
 	int getDistancePercent();
 
-	int getSpeed() const {
+	int getSpeed() {
 		return currentSpeed;
 	}
 
-	bool isSpeedPump() const {
+	bool isSpeedPump() {
 		return speedPump;
 	}
 
-	bool isSignalLost() const {
+	bool isSignalLost() {
 		return signalLost;
 	}
 

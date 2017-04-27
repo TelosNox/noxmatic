@@ -13,6 +13,7 @@ const int HEATER_MAXPOWER_ADDRESS = 7;
 
 
 Settings::Settings() {
+  EEPROM.begin(512);
 	oilerRotationLength = EEPROM.read(OILER_ROTATIONLENGTH_ADDRESS) * 10;
 	oilerTickPerRotation = EEPROM.read(OILER_TICKPERROTATION_ADDRESS);
 	oilerDistance = EEPROM.read(OILER_DISTANCE_ADDRESS) * 100;
@@ -37,4 +38,5 @@ void Settings::persist() {
 	EEPROM.write(HEATER_STARTPOWER_ADDRESS, heaterStartPower);
 	EEPROM.write(HEATER_MAXTEMP_ADDRESS, heaterMaxTemp);
 	EEPROM.write(HEATER_MAXPOWER_ADDRESS, heaterMaxPower);
+  EEPROM.commit();
 }

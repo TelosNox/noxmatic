@@ -9,7 +9,7 @@ public:
 	Settings();
 	virtual ~Settings();
 
-	int getHeaterMaxPower() const {
+	int getHeaterMaxPower() {
 		return heaterMaxPower;
 	}
 
@@ -17,7 +17,7 @@ public:
     this->heaterMaxPower = heaterMaxPower;
   }
   
-	int getHeaterMaxTemp() const {
+	int getHeaterMaxTemp() {
 		return heaterMaxTemp;
 	}
 
@@ -25,7 +25,7 @@ public:
     this->heaterMaxTemp = heaterMaxTemp;
   }
 
-	int getHeaterStartPower() const {
+	int getHeaterStartPower() {
 		return heaterStartPower;
 	}
 
@@ -33,7 +33,7 @@ public:
     this->heaterStartPower = heaterStartPower;
   }
 
-	int getHeaterStartTemp() const {
+	int getHeaterStartTemp() {
 		return heaterStartTemp;
 	}
 
@@ -41,7 +41,7 @@ public:
     this->heaterStartTemp = heaterStartTemp;
   }
 
-	int getOilerDistance() const {
+	int getOilerDistance() {
 		return oilerDistance;
 	}
 
@@ -49,23 +49,23 @@ public:
     this->oilerDistance = oilerDistance;
   }
 
-	int getOilerRotationLength() const {
+	int getOilerRotationLength() {
 		return oilerRotationLength;
 	}
 
-  void setOilerRotationLenght(int oilerRotationLength) {
+  void setOilerRotationLength(int oilerRotationLength) {
     this->oilerRotationLength = oilerRotationLength;
   }
 
-	int getOilerTickPerRotation() const {
+	int getOilerTickPerRotation() {
 		return oilerTickPerRotation;
 	}
 
-  void setOilerTickPerRoatation(int oilerTickPerRotation) {
+  void setOilerTickPerRotation(int oilerTickPerRotation) {
     this->oilerTickPerRotation = oilerTickPerRotation;
   }
 
-	int getOilerEmergencyInterval() const {
+	int getOilerEmergencyInterval() {
 		return oilerEmergencyInterval;
 	}
 

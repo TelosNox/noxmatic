@@ -22,6 +22,8 @@ void setup() {
   digitalWrite(PIN_SPEED_SIGNAL, HIGH);
   attachInterrupt(PIN_SPEED_SIGNAL, speedSignalTrigger, FALLING);
   initSettings();
+
+  communication.connectWifi();
 }
 
 void initSettings() {
@@ -30,6 +32,7 @@ void initSettings() {
 }
 
 void loop() {
+  communication.process();
   chainOiler.process();
   heater.process();
   display.process();

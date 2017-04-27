@@ -46,7 +46,6 @@ void Heater::calculateTemperatureAndHeat() {
 		temperatureSensor->requestTemperatures();
 		float temp = temperatureSensor->getTempCByIndex(0);
 		actualTemperature = temp * 10;
-    Serial.println(actualTemperature);
 		calculateHeat();
 	}
 }

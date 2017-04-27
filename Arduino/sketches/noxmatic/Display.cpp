@@ -22,6 +22,12 @@ Display::Display(Heater *heater, ChainOiler *chainOiler, Settings *settings) {
 	pumpRunning = false;
 	u8g->setContrast(45);
   u8g->begin();
+
+  u8g->clearBuffer();
+  u8g->setFont(u8g_font_6x13);
+  u8g->setCursor(0, 63);
+  u8g->print("-WIFI Connect!-");
+  u8g->sendBuffer();
 }
 
 Display::~Display() {

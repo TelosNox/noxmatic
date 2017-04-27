@@ -11,11 +11,11 @@ public:
 	void init(int startTemp, int startHeat, int maxTemp, int maxHeat);
 	void process();
 
-	int getActualTemperature() const {
+	int getActualTemperature() {
 		return actualTemperature;
 	}
 
-	int getHeaterPower() const {
+	int getHeaterPower() {
 		return heaterPower;
 	}
 
