@@ -1,13 +1,15 @@
 #include "Heater.h"
-#include <Arduino.h>
 
-#define TEMPERATURE_INTERVAL 10000;
+#define TEMPERATURE_INTERVAL 5000;
 #define PWM_INTERVAL 1000;
 
-Heater::Heater(int pinHeater, int pinTemperatureData) {
-	this->pinHeater = pinHeater;
-	pinMode(pinHeater, OUTPUT);
-
+Heater::Heater(int pinHeater1, int pinHeater2, int pinTemperatureData) {
+	this->pinHeater1 = pinHeater1;
+  this->pinHeater2 = pinHeater2;
+	pinMode(pinHeater1, OUTPUT);
+  pinMode(pinHeater2, OUTPUT);
+  deactivateHeaterPin();
+  
 	heatActive = false;
 	actualTemperature = 0;
 	heaterPower = 0;
@@ -29,6 +31,8 @@ void Heater::init(int startTemp, int startHeat, int maxTemp, int maxHeat) {
 	this->startHeat = startHeat;
 	this->maxTemp = maxTemp;
 	this->maxHeat = maxHeat;
+  temperatureSensor->setWaitForConversion(false);
+  temperatureSensor->setResolution(9);
 }
 
 void Heater::process() {
@@ -43,9 +47,10 @@ void Heater::calculateTemperatureAndHeat() {
 
 	if (nextMillis < currentMillis) {
 		nextMillis = currentMillis + TEMPERATURE_INTERVAL;
-		temperatureSensor->requestTemperatures();
 		float temp = temperatureSensor->getTempCByIndex(0);
+    temperatureSensor->requestTemperatures();
 		actualTemperature = temp * 10;
+    actualTemperature -= 150;
 		calculateHeat();
 	}
 }
@@ -83,12 +88,14 @@ void Heater::runPwm() {
 
 void Heater::activateHeaterPin() {
 	heatActive = true;
-	digitalWrite(pinHeater, HIGH);
+	digitalWrite(pinHeater1, HIGH);
+  digitalWrite(pinHeater2, HIGH);
 }
 
 void Heater::deactivateHeaterPin() {
 	heatActive = false;
-	digitalWrite(pinHeater, LOW);
+	digitalWrite(pinHeater1, LOW);
+  digitalWrite(pinHeater2, LOW);
 }
 
 long Heater::calculateOffMillis() {

@@ -1,5 +1,4 @@
 #include "Display.h"
-#include "Arduino.h"
 
 #ifdef U8X8_HAVE_HW_SPI
 #include <SPI.h>
@@ -20,7 +19,6 @@ Display::Display(Heater *heater, ChainOiler *chainOiler, Settings *settings) {
 	this->chainOiler = chainOiler;
 	this->settings = settings;
 	pumpRunning = false;
-	u8g->setContrast(45);
   u8g->begin();
 
   u8g->clearBuffer();

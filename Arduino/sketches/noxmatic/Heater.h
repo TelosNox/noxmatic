@@ -6,7 +6,7 @@
 
 class Heater {
 public:
-	Heater(int pinHeater, int pinTemperatureData);
+	Heater(int pinHeater1, int pinHeater2, int pinTemperatureData);
 	virtual ~Heater();
 	void init(int startTemp, int startHeat, int maxTemp, int maxHeat);
 	void process();
@@ -20,7 +20,8 @@ public:
 	}
 
 private:
-	int pinHeater;
+	int pinHeater1;
+  int pinHeater2;
 	int actualTemperature;
 	int heaterPower;
 	bool heatActive;

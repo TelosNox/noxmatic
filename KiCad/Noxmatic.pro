@@ -1,4 +1,4 @@
-update=26.04.2017 23:20:35
+update=29.04.2017 23:44:52
 version=1
 last_client=kicad
 [pcbnew]
@@ -59,8 +59,8 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=nodemcu
-LibName31=DS18B20
-LibName32=displays
+LibName31=displays
+LibName32=maxim
 [schematic_editor]
 version=1
 PageLayoutDescrFile=

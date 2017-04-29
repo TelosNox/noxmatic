@@ -1,5 +1,4 @@
 #include "ChainOiler.h"
-#include "Arduino.h"
 
 #define PUMP_ON_INTERVAL_MILLIS 750;
 #define PUMP_OFF_INTERVAL_MILLIS 250;
@@ -94,7 +93,6 @@ void ChainOiler::processPump() {
 	static unsigned long pumpOffUntilMillis = 0;
 
 	unsigned long currentMillis = millis();
-
 	if (pumpActive && pumpOnUntilMillis < currentMillis) {
 		deactivatePumpPin();
 		pumpOffUntilMillis = currentMillis + PUMP_OFF_INTERVAL_MILLIS;
@@ -145,11 +143,10 @@ void ChainOiler::calculateSpeed() {
 		unsigned long lastTick = lastTickMillis;
 		long relevantMillis = lastTick - lastCalcMillis;
 		lastCalcMillis = lastTick;
-
-    if (relevantMillis == 0) {
-      return;
+    long calcSpeed = 0;
+    if (relevantMillis != 0) {
+      calcSpeed = ((long)currentTicks * speedTickFactor) / relevantMillis;
     }
-		long calcSpeed = ((long)currentTicks * speedTickFactor) / relevantMillis;
 		calcSpeed /= 1000;
 		currentSpeed = (calcSpeed + lastSpeed) / 2;
 
