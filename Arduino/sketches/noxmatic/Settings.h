@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include <EEPROM.h>
 
 #ifndef SETTINGS_H_

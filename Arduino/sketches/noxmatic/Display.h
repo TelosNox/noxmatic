@@ -1,8 +1,6 @@
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 #include <U8g2lib.h>
-#include "Heater.h"
-#include "ChainOiler.h"
 #include "Settings.h"
 #include <SPI.h>
 #include <Wire.h>
@@ -14,13 +12,11 @@ const int DISPLAY_WIDTH = 102;
 
 class Display {
 public:
-  Display(Heater *heater, ChainOiler *chainOiler, Settings *settings) {
+  Display(Settings *settings, Information *information) {
     u8g = new U8G2_UC1701_EA_DOGS102_F_4W_HW_SPI(U8G2_R0, D1, D0, D3);
     u8g->setColorIndex(1);
-    this->heater = heater;
-    this->chainOiler = chainOiler;
     this->settings = settings;
-    pumpRunning = false;
+    this->information = information;
     u8g->begin();
   
     u8g->clearBuffer();
@@ -37,16 +33,10 @@ public:
     processRefresh();
   }
  
-	void setPumpRunning(bool pumpRunning) {
-		this->pumpRunning = pumpRunning;
-	}
-
 private:
   U8G2 *u8g;
-  Heater *heater;
-  ChainOiler *chainOiler;
   Settings *settings;
-  bool pumpRunning;
+  Information *information;
 
   void processRefresh() {
     static unsigned long nextRefreshMillis = 0;
@@ -61,15 +51,14 @@ private:
   void drawNormal() {
     static bool distanceVisible = true;
   
-    int temperature = heater->getActualTemperature();
-    
-    int heaterPower = heater->getHeaterPower();
-    int distancePercent = chainOiler->getDistancePercent();
-    bool signalLost = chainOiler->isSignalLost();
-    int speed = chainOiler->getSpeed();
-    bool speedPump = chainOiler->isSpeedPump();
+    int temperature = information->temperature;
+    int heaterPower = information->heaterPower;
+    int distancePercent = information->distancePercent;
+    bool signalLost = information->speedSignalLost;
+    int speed = information->speed;
+    bool pumpPending = information->pumpPending;
   
-    if (speedPump) {
+    if (pumpPending) {
       distanceVisible = !distanceVisible;
     }
   
@@ -84,7 +73,7 @@ private:
       u8g->print("-Notlauf!-");
     } else {
       drawSpeed(speed);
-      if (!speedPump || distanceVisible) {
+      if (!pumpPending || distanceVisible) {
         drawDistance(distancePercent, true);
       }
     }

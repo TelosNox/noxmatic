@@ -9,7 +9,7 @@
 
 class Heater {
 public:
-  Heater(int pinHeater1, int pinHeater2, int pinTemperatureData) {
+  Heater(int pinHeater1, int pinHeater2, int pinTemperatureData, Settings *settings, Information *information) {
     this->pinHeater1 = pinHeater1;
     this->pinHeater2 = pinHeater2;
     pinMode(pinHeater1, OUTPUT);
@@ -26,19 +26,21 @@ public:
     oneWire = new OneWire(pinTemperatureData);
     temperatureSensor = new DallasTemperature(oneWire);
     temperatureSensor->begin();
+
+    this->startTemp = settings->getHeaterStartTemp();
+    this->startHeat = settings->getHeaterStartPower();
+    this->maxTemp = settings->getHeaterMaxTemp();
+    this->maxHeat = settings->getHeaterMaxPower();
+    temperatureSensor->setWaitForConversion(false);
+    temperatureSensor->setResolution(9);
+    this->information = information;
   }
   
   ~Heater() {
   }
-  
-  void init(int startTemp, int startHeat, int maxTemp, int maxHeat) {
+
+  void init() {
     deactivateHeaterPin();
-    this->startTemp = startTemp;
-    this->startHeat = startHeat;
-    this->maxTemp = maxTemp;
-    this->maxHeat = maxHeat;
-    temperatureSensor->setWaitForConversion(false);
-    temperatureSensor->setResolution(9);
   }
   
   void process() {
@@ -46,17 +48,11 @@ public:
     runPwm();
   }
 
-	int getActualTemperature() {
-		return actualTemperature;
-	}
-
-	int getHeaterPower() {
-		return heaterPower;
-	}
-
 private:
   DallasTemperature* temperatureSensor;
   OneWire* oneWire;
+  Information *information;
+  
 	int pinHeater1;
   int pinHeater2;
 	int actualTemperature;
@@ -79,6 +75,7 @@ private:
       temperatureSensor->requestTemperatures();
       actualTemperature = temp * 10;
       actualTemperature -= 150;
+      information->temperature = actualTemperature;
       calculateHeat();
     }
   }
@@ -96,6 +93,7 @@ private:
     } else {
       heaterPower = map(checkTemp, startTemp, maxTemp, startHeat, maxHeat);
     }
+    information->heaterPower = heaterPower;
   }
   
   void runPwm() {

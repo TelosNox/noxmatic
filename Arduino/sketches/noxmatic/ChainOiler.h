@@ -1,4 +1,5 @@
 #include "Settings.h"
+#include "Information.h"
 
 #ifndef OILCALCULATOR_H_
 #define OILCALCULATOR_H_
@@ -10,28 +11,21 @@
 
 class ChainOiler {
 public:
-  ChainOiler(int pinPump) {
+  ChainOiler(int pinPump, Settings *settings, Information *information) {
+    this->information = information;
     pumpActive = false;
     startPump = false;
     stopPump = true;
     this->pinPump = pinPump;
     pinMode(pinPump, OUTPUT);
-    requiredOilTicks = 0;
-    remainingOilTicks = 0;
     lastTickMillis = 0;
-    signalLost = false;
+    setSignalLost(false);
     currentSpeed = 0;
     speedTickFactor = 0;
     speedTicks = 0;
-    speedPump = false;
+    setPumpPending(false);
     emergencyPumpInterval = 600000;
     speedIntervall = SPEED_INTERVALL;
-  }
-
-  ~ChainOiler() {
-  }
-
-  void init(Settings *settings) {
     long rotationLength = settings->getOilerRotationLength();
     long tickPerRotation = settings->getOilerTickPerRotation();
     long oilDistance = settings->getOilerDistance();
@@ -46,14 +40,31 @@ public:
     }
   }
 
+  ~ChainOiler() {
+  }
+
+  void init() {
+    deactivatePumpPin();
+  }
+
 	void processTick() {
    remainingOilTicks--;
     speedTicks++;
     if (remainingOilTicks < 1) {
       remainingOilTicks += requiredOilTicks;
-      speedPump = true;
+      setPumpPending(true);
     }
     lastTickMillis = millis();
+  }
+
+  void setSignalLost(bool lost) {
+    signalLost = lost;
+    information->speedSignalLost = signalLost;
+  }
+
+  void setPumpPending(bool pending) {
+    pumpPending = pending;
+    information->pumpPending = pumpPending;
   }
 
   void process() {
@@ -62,10 +73,10 @@ public:
     unsigned long currentMillis = millis();
     unsigned long signalLostMillis = lastTickMillis + SIGNAL_LOST_INTERVAL_MILLIS;
     if (currentMillis > signalLostMillis) {
-      signalLost = true;
+      setSignalLost(true);
       //NOTLAUF
     } else {
-      signalLost = false;
+      setSignalLost(false);
     }
     
     if (signalLost && currentMillis > nextEmergencyPump) {
@@ -76,24 +87,8 @@ public:
     processSpeedPump();
     processPump();
     calculateSpeed();
+    information->distancePercent = getDistancePercent();    
   }
-
-	int getDistancePercent() {
-    if(requiredOilTicks == 0) {
-      return 0;
-    }
-   unsigned long tmp = (requiredOilTicks - remainingOilTicks)* 100;
-    return tmp / requiredOilTicks;
-  }
-
-
-	int getSpeed() {
-		return currentSpeed;
-	}
-
-	bool isSpeedPump() {
-		return speedPump;
-	}
 
 	bool isSignalLost() {
 		return signalLost;
@@ -121,9 +116,10 @@ private:
 	int currentSpeed;
 	long speedTickFactor;
 	int speedTicks;
-	bool speedPump;
+	bool pumpPending;
 	long emergencyPumpInterval;
 	int speedIntervall;
+  Information *information;
 
 	long calculateOilTicks(long tickPerRotation, long oilDistance, long rotationLength) {
     if (rotationLength == 0) {
@@ -145,6 +141,14 @@ private:
   void activatePumpPin() {
     pumpActive = true;
     digitalWrite(pinPump, HIGH);
+  }
+
+  int getDistancePercent() {
+    if(requiredOilTicks == 0) {
+      return 0;
+    }
+   unsigned long tmp = (requiredOilTicks - remainingOilTicks)* 100;
+    return tmp / requiredOilTicks;
   }
 
 	void processPump() {
@@ -183,6 +187,7 @@ private:
       }
       calcSpeed /= 1000;
       currentSpeed = (calcSpeed + lastSpeed) / 2;
+      information->speed = currentSpeed;
   
       speedTicks -= currentTicks;
       lastSpeed = calcSpeed;
@@ -190,9 +195,9 @@ private:
   }
 
   void processSpeedPump() {
-    if (speedPump) {
+    if (pumpPending) {
       if ((10 < currentSpeed && currentSpeed < 60) || getDistancePercent() > 10) {
-        speedPump = false;
+        setPumpPending(false);
         pumpOnce();
       }
     }
