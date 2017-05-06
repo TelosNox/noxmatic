@@ -2,8 +2,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 
-const char* config_ssid = "daisy";
-const char* config_password = "Arschloch1";
+const char* config_ssid = "noxmatic";
+const char* config_password = "noxmatic";
 
 ESP8266WebServer server(80);
 
