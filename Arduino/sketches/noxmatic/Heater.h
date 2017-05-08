@@ -14,6 +14,11 @@ public:
     this->startHeat = settings->getHeaterStartPower();
     this->maxTemp = settings->getHeaterMaxTemp();
     this->maxHeat = settings->getHeaterMaxPower();
+    int balance = settings->getHeaterBalance();
+    if (balance > 100) {
+      balance = 100;
+    }
+    this->heaterBalance = balance;
     this->information = information;
   }
   
@@ -45,6 +50,7 @@ private:
 	int startHeat;
 	int maxTemp;
 	int maxHeat;
+  int heaterBalance;
 
   void calculateHeat() {
     int checkTemp = information->temperature;
@@ -55,8 +61,9 @@ private:
       heaterPower = map(checkTemp, startTemp, maxTemp, startHeat, maxHeat);
     }
     information->heaterPower = heaterPower;
+    int heaterPower2 = heaterPower * heaterBalance / 100;
     pwmHeater1->setPower(heaterPower);
-    pwmHeater2->setPower(heaterPower);
+    pwmHeater2->setPower(heaterPower2);
   }
   
   void runPwm() {

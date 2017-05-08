@@ -4,8 +4,8 @@
 
 #define PUMP_INTERVAL_MILLIS 1000;
 
-const char* config_ssid = "daisy";
-const char* config_password = "Arschloch1";
+const char* config_ssid = "noxnition";
+const char* config_password = "noxnition";
 
 ESP8266WebServer server(80);
 
@@ -65,6 +65,7 @@ private:
       settings->setHeaterMaxTemp(getValue("heaterMaxTemp", 10));
       settings->setHeaterStartPower(getValue("heaterStartPower", 1));
       settings->setHeaterMaxPower(getValue("heaterMaxPower", 1));
+      settings->setHeaterBalance(getValue("heaterBalance", 1));
       settings->setOilerTickPerRotation(getValue("oilerTickPerRotation", 1));
       settings->setOilerRotationLength(getValue("oilerRotationLength", 1));
       settings->setOilerDistance(getValue("oilerDistance", 1));
@@ -82,6 +83,7 @@ private:
     temp += buildRow("heaterStartPower", settings->getHeaterStartPower(), "5", 1, 0, 100);
     temp += buildRow("heaterMaxTemp", settings->getHeaterMaxTemp(), "0.5", 10, 0, 25);
     temp += buildRow("heaterMaxPower", settings->getHeaterMaxPower(), "5", 1, 0, 100);
+    temp += buildRow("heaterBalance", settings->getHeaterBalance(), "5", 1, 0, 100);
   
     temp += "<tr><td colspan=\"3\"></td></tr>";
     temp += "<tr><td colspan=\"3\">Oiler</td></tr>";

@@ -12,6 +12,7 @@ const int HEATER_STARTTEMP_ADDRESS = 4;
 const int HEATER_STARTPOWER_ADDRESS = 5;
 const int HEATER_MAXTEMP_ADDRESS = 6;
 const int HEATER_MAXPOWER_ADDRESS = 7;
+const int HEATER_BALANCE_ADDRESS = 8;
 
 class Settings {
 
@@ -27,6 +28,7 @@ public:
     heaterStartPower = EEPROM.read(HEATER_STARTPOWER_ADDRESS);
     heaterMaxTemp = EEPROM.read(HEATER_MAXTEMP_ADDRESS);
     heaterMaxPower = EEPROM.read(HEATER_MAXPOWER_ADDRESS);
+    heaterBalance = EEPROM.read(HEATER_BALANCE_ADDRESS);
   }
   
   ~Settings() {
@@ -42,6 +44,7 @@ public:
     EEPROM.write(HEATER_STARTPOWER_ADDRESS, heaterStartPower);
     EEPROM.write(HEATER_MAXTEMP_ADDRESS, heaterMaxTemp);
     EEPROM.write(HEATER_MAXPOWER_ADDRESS, heaterMaxPower);
+    EEPROM.write(HEATER_BALANCE_ADDRESS, heaterBalance);
     EEPROM.commit();
   }
 
@@ -109,6 +112,14 @@ public:
     this->oilerEmergencyInterval = oilerEmergencyInterval;
   }
 
+  int getHeaterBalance() {
+    return heaterBalance;
+  }
+
+  void setHeaterBalance(int balance) {
+    heaterBalance = balance;
+  }
+
 private:
 	int oilerRotationLength;
 	int oilerTickPerRotation;
@@ -118,6 +129,7 @@ private:
 	int heaterStartPower;
 	int heaterMaxTemp;
 	int heaterMaxPower;
+  int heaterBalance;
 };
 
 #endif /* SETTINGS_H_ */
