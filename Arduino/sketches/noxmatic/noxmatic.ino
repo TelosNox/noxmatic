@@ -4,6 +4,7 @@
 #include "Display.h"
 #include "CommunicationESP.h"
 #include "Information.h"
+#include "DistanceCalculator.h"
 
 #define PIN_SPEED_SIGNAL D6
 #define PIN_PUMP D8
@@ -18,6 +19,7 @@ ChainOiler chainOiler(PIN_PUMP, &settings, &information);
 Heater heater(PIN_HEATER1, PIN_HEATER2, PIN_TEMPERATURE_DATA, &settings, &information);
 Display display(&settings, &information);
 CommunicationESP communication(&settings);
+DistanceCalculator distanceCalculator(&settings, &information, &chainOiler);
 
 void setup() {
   Serial.begin(115200);
@@ -30,11 +32,12 @@ void setup() {
 
 void loop() {
   communication.process();
+  distanceCalculator.process();
   chainOiler.process();
   heater.process();
   display.process();
 }
 
 void speedSignalTrigger() {
-  chainOiler.processTick();
+  distanceCalculator.processTick();
 }

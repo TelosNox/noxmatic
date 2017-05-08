@@ -6,8 +6,6 @@
 
 #define PUMP_ON_INTERVAL_MILLIS 750;
 #define PUMP_OFF_INTERVAL_MILLIS 250;
-#define SIGNAL_LOST_INTERVAL_MILLIS 600000;
-#define SPEED_INTERVALL 1000;
 
 class ChainOiler {
 public:
@@ -18,26 +16,12 @@ public:
     stopPump = true;
     this->pinPump = pinPump;
     pinMode(pinPump, OUTPUT);
-    lastTickMillis = 0;
-    setSignalLost(false);
-    currentSpeed = 0;
-    speedTickFactor = 0;
-    speedTicks = 0;
     setPumpPending(false);
     emergencyPumpInterval = 600000;
-    speedIntervall = SPEED_INTERVALL;
-    long rotationLength = settings->getOilerRotationLength();
-    long tickPerRotation = settings->getOilerTickPerRotation();
     long oilDistance = settings->getOilerDistance();
     emergencyPumpInterval = (long)settings->getOilerEmergencyInterval() * 1000;
-    requiredOilTicks = calculateOilTicks(tickPerRotation, oilDistance, rotationLength);
-    remainingOilTicks = requiredOilTicks / 2;
-    if (tickPerRotation != 0) {
-      speedTickFactor = rotationLength * 3600 / tickPerRotation;
-    }
-    if (tickPerRotation > 1) {
-      speedIntervall /= 2;
-    }
+    requiredOilDistance = oilDistance * 1000;
+    remainingOilDistance = requiredOilDistance /2;
   }
 
   ~ChainOiler() {
@@ -47,19 +31,13 @@ public:
     deactivatePumpPin();
   }
 
-	void processTick() {
-   remainingOilTicks--;
-    speedTicks++;
-    if (remainingOilTicks < 1) {
-      remainingOilTicks += requiredOilTicks;
+  void processDistance(long distance) {
+    remainingOilDistance -= distance;
+    if (remainingOilDistance < 1) {
+      remainingOilDistance += requiredOilDistance;
       setPumpPending(true);
     }
-    lastTickMillis = millis();
-  }
-
-  void setSignalLost(bool lost) {
-    signalLost = lost;
-    information->speedSignalLost = signalLost;
+    information->distancePercent = getDistancePercent();    
   }
 
   void setPumpPending(bool pending) {
@@ -71,14 +49,7 @@ public:
     static unsigned long nextEmergencyPump = 0;
     
     unsigned long currentMillis = millis();
-    unsigned long signalLostMillis = lastTickMillis + SIGNAL_LOST_INTERVAL_MILLIS;
-    if (currentMillis > signalLostMillis) {
-      setSignalLost(true);
-      //NOTLAUF
-    } else {
-      setSignalLost(false);
-    }
-    
+    boolean signalLost = information->speedSignalLost;
     if (signalLost && currentMillis > nextEmergencyPump) {
       nextEmergencyPump = currentMillis + emergencyPumpInterval;
       pumpOnce();
@@ -86,13 +57,7 @@ public:
     
     processSpeedPump();
     processPump();
-    calculateSpeed();
-    information->distancePercent = getDistancePercent();    
   }
-
-	bool isSignalLost() {
-		return signalLost;
-	}
 
   void pumpOn() {
     startPump = true;
@@ -105,20 +70,14 @@ public:
   }
 
 private:
-	long requiredOilTicks;
-	long remainingOilTicks;
+  long requiredOilDistance;
+  long remainingOilDistance;
 	int pinPump;
 	bool pumpActive;
 	bool startPump;
 	bool stopPump;
-	bool signalLost;
-	unsigned long lastTickMillis;
-	int currentSpeed;
-	long speedTickFactor;
-	int speedTicks;
 	bool pumpPending;
 	long emergencyPumpInterval;
-	int speedIntervall;
   Information *information;
 
 	long calculateOilTicks(long tickPerRotation, long oilDistance, long rotationLength) {
@@ -144,11 +103,12 @@ private:
   }
 
   int getDistancePercent() {
-    if(requiredOilTicks == 0) {
-      return 0;
+    int percent = 0;
+    if(requiredOilDistance > 0 && remainingOilDistance > 0) {
+      unsigned long tmp = (requiredOilDistance - remainingOilDistance)* 100;
+      percent = tmp / requiredOilDistance;
     }
-   unsigned long tmp = (requiredOilTicks - remainingOilTicks)* 100;
-    return tmp / requiredOilTicks;
+    return percent;
   }
 
 	void processPump() {
@@ -168,35 +128,10 @@ private:
     }
   }
 
-  void calculateSpeed() {
-    static unsigned long nextSpeedMillis = 0;
-    static unsigned long lastCalcMillis = 0;
-    static int lastSpeed = 0;
-  
-    unsigned long currentMillis = millis();
-    if (currentMillis > nextSpeedMillis) {
-      nextSpeedMillis = currentMillis + SPEED_INTERVALL;
-  
-      int currentTicks = speedTicks;
-      unsigned long lastTick = lastTickMillis;
-      long relevantMillis = lastTick - lastCalcMillis;
-      lastCalcMillis = lastTick;
-      long calcSpeed = 0;
-      if (relevantMillis != 0) {
-        calcSpeed = ((long)currentTicks * speedTickFactor) / relevantMillis;
-      }
-      calcSpeed /= 1000;
-      currentSpeed = (calcSpeed + lastSpeed) / 2;
-      information->speed = currentSpeed;
-  
-      speedTicks -= currentTicks;
-      lastSpeed = calcSpeed;
-    }
-  }
-
   void processSpeedPump() {
     if (pumpPending) {
-      if ((10 < currentSpeed && currentSpeed < 60) || getDistancePercent() > 10) {
+      int currentSpeed = information->speed;
+      if ((10 < currentSpeed && currentSpeed < 60) || getDistancePercent() > 20) {
         setPumpPending(false);
         pumpOnce();
       }

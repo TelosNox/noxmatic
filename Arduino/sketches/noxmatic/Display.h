@@ -18,7 +18,7 @@ public:
     this->settings = settings;
     this->information = information;
     u8g->begin();
-  
+    u8g->setContrast(30);
     u8g->clearBuffer();
     u8g->setFont(u8g_font_6x13);
     u8g->setCursor(0, 63);

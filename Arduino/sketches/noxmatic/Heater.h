@@ -1,9 +1,6 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#ifndef HEATER_H_
-#define HEATER_H_
-
 #define TEMPERATURE_INTERVAL 5000;
 #define PWM_INTERVAL 1000;
 
@@ -132,5 +129,3 @@ private:
     return heaterPower * 10;
   }
 };
-
-#endif /* HEATER_H_ */
