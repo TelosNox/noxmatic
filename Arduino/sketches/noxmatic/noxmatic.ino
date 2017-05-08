@@ -6,6 +6,7 @@
 #include "CommunicationESP.h"
 #include "Information.h"
 #include "DistanceCalculator.h"
+#include "TemperatureCalculator.h"
 
 #define PIN_SPEED_SIGNAL D6
 #define PIN_PUMP D8
@@ -16,9 +17,10 @@
 
 Settings settings;
 Information information;
+TemperatureCalculator temperatureCalculator(PIN_TEMPERATURE_DATA, &information);
 Pump pump(PIN_PUMP);
 ChainOiler chainOiler(&pump, &settings, &information);
-Heater heater(PIN_HEATER1, PIN_HEATER2, PIN_TEMPERATURE_DATA, &settings, &information);
+Heater heater(PIN_HEATER1, PIN_HEATER2, &settings, &information);
 Display display(&settings, &information);
 CommunicationESP communication(&settings);
 DistanceCalculator distanceCalculator(&settings, &information, &chainOiler);
@@ -33,6 +35,7 @@ void setup() {
 }
 
 void loop() {
+  temperatureCalculator.process();
   communication.process();
   distanceCalculator.process();
   chainOiler.process();
