@@ -1,3 +1,4 @@
+#include "Pump.h"
 #include "ChainOiler.h"
 #include "Settings.h"
 #include "Heater.h"
@@ -15,7 +16,8 @@
 
 Settings settings;
 Information information;
-ChainOiler chainOiler(PIN_PUMP, &settings, &information);
+Pump pump(PIN_PUMP);
+ChainOiler chainOiler(&pump, &settings, &information);
 Heater heater(PIN_HEATER1, PIN_HEATER2, PIN_TEMPERATURE_DATA, &settings, &information);
 Display display(&settings, &information);
 CommunicationESP communication(&settings);
@@ -23,7 +25,7 @@ DistanceCalculator distanceCalculator(&settings, &information, &chainOiler);
 
 void setup() {
   Serial.begin(115200);
-  chainOiler.init();
+  pump.init();
   heater.init();
   communication.connectWifi();
   pinMode(PIN_SPEED_SIGNAL, INPUT_PULLUP);
@@ -36,6 +38,7 @@ void loop() {
   chainOiler.process();
   heater.process();
   display.process();
+  pump.process();
 }
 
 void speedSignalTrigger() {
