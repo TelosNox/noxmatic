@@ -22,7 +22,7 @@ Pump pump(PIN_PUMP);
 ChainOiler chainOiler(&pump, &settings, &information);
 Heater heater(PIN_HEATER1, PIN_HEATER2, &settings, &information);
 Display display(&settings, &information);
-CommunicationESP communication(&settings);
+CommunicationESP communication(&settings, &pump);
 DistanceCalculator distanceCalculator(&settings, &information, &chainOiler);
 
 String ip;

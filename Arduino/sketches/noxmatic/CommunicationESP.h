@@ -2,16 +2,20 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 
-const char* config_ssid = "noxnition";
-const char* config_password = "noxnition";
+#define PUMP_INTERVAL_MILLIS 1000;
+
+const char* config_ssid = "daisy";
+const char* config_password = "Arschloch1";
 
 ESP8266WebServer server(80);
 
 class CommunicationESP {
 
 public:
-  CommunicationESP(Settings *settings) {
+  CommunicationESP(Settings *settings, Pump *pump) {
       this->settings = settings;
+      this->pump = pump;
+      pumping = false;
   }
   
   virtual ~CommunicationESP() {    
@@ -38,11 +42,20 @@ public:
   }
   
   void process() {
+    static unsigned long nextMillis = 0;
+
+    if (pumping && nextMillis < millis()) {
+      nextMillis = millis() + PUMP_INTERVAL_MILLIS;
+      pump->pump();
+    }
+    
     server.handleClient();
   }
 
 private:
   Settings *settings;
+  Pump *pump;
+  bool pumping;
 
   void sendHtml() {
     String action = server.arg("action");
@@ -57,6 +70,8 @@ private:
       settings->setOilerDistance(getValue("oilerDistance", 1));
       settings->setOilerEmergencyInterval(getValue("oilerEmergencyInterval", 1));
       settings->persist();
+    } else if (action == "pump") {
+      pumping = !pumping;
     }
 
     String temp = "<html><body><form action=\"\" method=\"post\"><input type=\"hidden\" name=\"action\" id=\"action\" value=\"save\"><table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">";
@@ -74,7 +89,15 @@ private:
     temp += buildRow("oilerRotationLength", settings->getOilerRotationLength(), "10", 1, 10, 2550);
     temp += buildRow("oilerDistance", settings->getOilerDistance(), "100", 1, 100, 25500);
     temp += buildRow("oilerEmergencyInterval", settings->getOilerEmergencyInterval(), "10", 1, 10, 2550);
-    temp += "</tbody></table><button type=\"submit\">Speichern</button></form></body></html>";
+    temp += "</tbody></table><button type=\"submit\">Speichern</button></form>";
+    temp += "<form action=\"\" method=\"post\"><input type=\"hidden\" name=\"action\" id=\"action\" value=\"pump\"><button type=\"submit\">Pumpe</button> ist ";
+    if (pumping) {
+      temp += "an";
+    } else {
+      temp += "aus";
+    }
+    temp += "</form>";
+    temp += "</body></html>";
   
     temp += add;
     server.send(200, "text/html", temp);
