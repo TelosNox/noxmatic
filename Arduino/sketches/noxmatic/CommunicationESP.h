@@ -2,8 +2,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 
-const char* config_ssid = "noxmatic";
-const char* config_password = "noxmatic";
+const char* config_ssid = "noxnition";
+const char* config_password = "noxnition";
 
 ESP8266WebServer server(80);
 
@@ -17,7 +17,7 @@ public:
   virtual ~CommunicationESP() {    
   }
 
-  bool connectWifi() {
+  String connectWifi() {
     WiFi.disconnect(); 
     WiFi.mode(WIFI_STA);
     WiFi.begin(config_ssid, config_password);
@@ -25,7 +25,8 @@ public:
     while (WiFi.status() != WL_CONNECTED) {
       retry++;
       if (retry > 50) {
-        return false;
+        WiFi.disconnect(); 
+        return "";
       }
       delay(500);
     }
@@ -33,9 +34,7 @@ public:
     server.begin();
     server.on("/", std::bind(&CommunicationESP::sendHtml, this));
 
-    Serial.println(WiFi.localIP());
-
-    return true;
+    return WiFi.localIP().toString();
   }
   
   void process() {

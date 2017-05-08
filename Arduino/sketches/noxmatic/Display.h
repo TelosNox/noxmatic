@@ -19,14 +19,17 @@ public:
     this->information = information;
     u8g->begin();
     u8g->setContrast(30);
-    u8g->clearBuffer();
-    u8g->setFont(u8g_font_6x13);
-    u8g->setCursor(0, 63);
-    u8g->print("-WIFI Connect!-");
-    u8g->sendBuffer();
+    message = "-WIFI Connect!-";
+    showMessage = false;
+    drawMessage();
   }
   
   ~Display() {
+  }
+
+  void setIP(String ip) {
+    message = ip;
+    showMessage = true;
   }
   
   void process() {
@@ -37,6 +40,8 @@ private:
   U8G2 *u8g;
   Settings *settings;
   Information *information;
+  String message;
+  bool showMessage;
 
   void processRefresh() {
     static unsigned long nextRefreshMillis = 0;
@@ -44,8 +49,20 @@ private:
     unsigned long currentMillis = millis();
     if (currentMillis > nextRefreshMillis) {
       nextRefreshMillis = currentMillis + REFRESH_INTERVAL_MILLIS;
-      drawNormal();
+      if (showMessage) {
+        drawMessage();
+      } else {
+        drawNormal();
+      }
     }
+  }
+
+  void drawMessage() {
+    u8g->clearBuffer();
+    u8g->setFont(u8g_font_6x13);
+    u8g->setCursor(0, 63);
+    u8g->print(message);
+    u8g->sendBuffer();
   }
   
   void drawNormal() {
