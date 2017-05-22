@@ -13,10 +13,13 @@ public:
     temperatureSensor->setWaitForConversion(false);
     temperatureSensor->setResolution(9);
     this->information = information;
-    temperatureSensor->requestTemperatures();
   }
   
   ~TemperatureCalculator() {
+  }
+
+  void init() {
+    temperatureSensor->requestTemperatures();
   }
 
   void process() {

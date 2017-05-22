@@ -19,12 +19,27 @@ public:
     this->information = information;
     u8g->begin();
     u8g->setContrast(30);
-    message = "-WIFI Connect!-";
     showMessage = false;
-    drawMessage();
   }
-  
+
   ~Display() {
+  }
+
+  void drawConnectProgress(int progress) {
+    u8g->clearBuffer();
+    u8g->drawCircle(DISPLAY_WIDTH/2, 31, 25, U8G2_DRAW_ALL);
+    u8g->drawEllipse(DISPLAY_WIDTH/2, 40, 15, 5, U8G2_DRAW_LOWER_LEFT);
+    u8g->drawEllipse(DISPLAY_WIDTH/2, 40, 15, 5, U8G2_DRAW_LOWER_RIGHT);
+    u8g->drawFilledEllipse(DISPLAY_WIDTH/2, 44, 7, 5, U8G2_DRAW_LOWER_LEFT);
+    u8g->drawFilledEllipse(DISPLAY_WIDTH/2, 44, 7, 5, U8G2_DRAW_LOWER_RIGHT);
+    u8g->drawEllipse(43, 25, 5, 9, U8G2_DRAW_ALL);
+    u8g->drawEllipse(DISPLAY_WIDTH -43, 25, 5, 9, U8G2_DRAW_ALL);
+    u8g->drawFilledEllipse(43, 28, 3, 5, U8G2_DRAW_ALL);
+    u8g->drawFilledEllipse(DISPLAY_WIDTH -43, 28, 3, 5, U8G2_DRAW_ALL);
+
+    u8g->drawBox(1, 60, progress, 5);
+
+    u8g->sendBuffer();
   }
 
   void setIP(String ip) {

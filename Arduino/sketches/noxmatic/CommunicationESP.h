@@ -1,20 +1,22 @@
 #include "Settings.h"
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include "Display.h"
 
 #define PUMP_INTERVAL_MILLIS 1000;
 
-const char* config_ssid = "noxnition";
-const char* config_password = "noxnition";
+const char* config_ssid = "noxmatic";
+const char* config_password = "noxmatic";
 
 ESP8266WebServer server(80);
 
 class CommunicationESP {
 
 public:
-  CommunicationESP(Settings *settings, Pump *pump) {
+  CommunicationESP(Settings *settings, Pump *pump, Display *display) {
       this->settings = settings;
       this->pump = pump;
+      this->display = display;
       pumping = false;
   }
   
@@ -26,9 +28,12 @@ public:
     WiFi.mode(WIFI_STA);
     WiFi.begin(config_ssid, config_password);
     int retry = 0;
+    int progress = 0;
     while (WiFi.status() != WL_CONNECTED) {
       retry++;
-      if (retry > 50) {
+      progress += 5;
+      display->drawConnectProgress(progress);
+      if (retry > 20) {
         WiFi.disconnect(); 
         return "";
       }
@@ -55,6 +60,7 @@ public:
 private:
   Settings *settings;
   Pump *pump;
+  Display *display;
   bool pumping;
 
   void sendHtml() {

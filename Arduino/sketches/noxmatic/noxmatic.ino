@@ -22,7 +22,7 @@ Pump pump(PIN_PUMP);
 ChainOiler chainOiler(&pump, &settings, &information);
 Heater heater(PIN_HEATER1, PIN_HEATER2, &settings, &information);
 Display display(&settings, &information);
-CommunicationESP communication(&settings, &pump);
+CommunicationESP communication(&settings, &pump, &display);
 DistanceCalculator distanceCalculator(&settings, &information, &chainOiler);
 
 String ip;
@@ -31,6 +31,8 @@ void setup() {
   Serial.begin(115200);
   pump.init();
   heater.init();
+  temperatureCalculator.init();
+  display.drawConnectProgress(0);
   ip = communication.connectWifi();
   if (ip.length() > 0) {
     display.setIP(ip);
