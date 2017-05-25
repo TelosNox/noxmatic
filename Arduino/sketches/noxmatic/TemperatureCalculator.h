@@ -42,7 +42,7 @@ private:
       nextMillis = currentMillis + TEMPERATURE_INTERVAL;
       float temp = temperatureSensor->getTempCByIndex(0);
       temperatureSensor->requestTemperatures();
-      actualTemperature = temp * 10 - 150;
+      actualTemperature = temp * 10;
       information->temperature = actualTemperature;
     }
   }

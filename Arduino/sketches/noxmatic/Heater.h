@@ -2,7 +2,7 @@
 #include <DallasTemperature.h>
 #include "Pwm.h"
 
-#define HEATER_INTERVAL 5000;
+#define HEATER_INTERVAL 2000;
 
 class Heater {
 public:
@@ -59,6 +59,10 @@ private:
       heaterPower = maxHeat;
     } else if (checkTemp < startTemp) {
       heaterPower = map(checkTemp, startTemp, maxTemp, startHeat, maxHeat);
+    }
+    int speed = information->speed;
+    if (speed < 50) {
+      heaterPower = map(speed, 0, 50, heaterPower/2, heaterPower);
     }
     information->heaterPower = heaterPower;
     int heaterPower2 = heaterPower * heaterBalance / 100;
