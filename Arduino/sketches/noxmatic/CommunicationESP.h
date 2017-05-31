@@ -6,8 +6,8 @@
 
 #define PUMP_INTERVAL_MILLIS 1000;
 
-const char* config_ssid = "daisy";
-const char* config_password = "Arschloch1";
+const char* config_ssid = "noxmatic";
+const char* config_password = "noxmatic";
 
 ESP8266WebServer server(80);
 ESP8266HTTPUpdateServer httpUpdater;
