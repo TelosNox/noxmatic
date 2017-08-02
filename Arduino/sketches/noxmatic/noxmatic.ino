@@ -28,7 +28,7 @@ DistanceCalculator distanceCalculator(&settings, &information, &chainOiler);
 String ip;
 
 void setup() {
-  Serial.begin(115200);
+  //Serial.begin(115200);
   pump.init();
   heater.init();
   temperatureCalculator.init();

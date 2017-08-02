@@ -36,7 +36,10 @@ public:
       progress += 5;
       display->drawConnectProgress(progress);
       if (retry > 20) {
-        WiFi.disconnect(); 
+        WiFi.disconnect();
+        WiFi.mode(WIFI_OFF);
+        WiFi.forceSleepBegin();
+        delay(1);
         return "";
       }
       delay(500);
