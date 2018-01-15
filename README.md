@@ -15,6 +15,7 @@
 - 1x Zenerdiode 15V 5W
 - 1x Drosselspule 47µF (min 200mA)
 - 1x Anschlussklemmen
+
 Hiermit kann man den Controller schonmal am Motorrad betreiben.
 
 #### Kettenölung
@@ -23,6 +24,7 @@ Hiermit kann man den Controller schonmal am Motorrad betreiben.
 - 1x R100
 - 1x R10k
 - 1x IRF3708
+
 Hiermit kann die Kettenölung mit Geschwindigkeitsmessung ergänzt werden.
 
 #### Heizgriffsteuerung
@@ -31,6 +33,7 @@ Hiermit kann die Kettenölung mit Geschwindigkeitsmessung ergänzt werden.
 - 2x R10k
 - 2x IRF3708
 - 1x DS18B80
+
 Hiermit kann die Griffheizung samt Temperaturmessung ergänzt werden.
 
 #### Display
@@ -40,4 +43,5 @@ Hiermit kann die Griffheizung samt Temperaturmessung ergänzt werden.
 - 1x R1k
 - 1x R10k
 - 2x Buchse für min 6 Adern Kabel RJ45 bietet sich an, dann kann man geschirmte Netzwerkkabel verwenden
+
 Hiermit kann das Display ergänzt werden.
