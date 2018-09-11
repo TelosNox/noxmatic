@@ -1,0 +1,36 @@
+int value = 1;
+int prevValue = 1;
+
+long lastTrigger = 0;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(D0, OUTPUT);
+  
+  pinMode(D4, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(D4), trigger, FALLING);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  digitalWrite(D0, HIGH);
+  delay(value);
+  digitalWrite(D0, LOW);
+  //delay(value);
+}
+
+void trigger() {
+  long current = millis();
+  if (current > lastTrigger + 200) {
+    lastTrigger = current;
+    int prev = value;
+    value += prevValue;
+    prevValue = prev;
+    if (value > 40) {
+      value = 1;
+      prevValue = 1;
+    }
+  }
+}
